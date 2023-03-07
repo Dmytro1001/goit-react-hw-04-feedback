@@ -1,16 +1,63 @@
-export const App = () => {
+import { useState } from 'react';
+import { Section } from './Section/Section';
+import { Notification } from './Notification/Notification';
+import { Feedback } from './FeedBack/FeedBack';
+import { Statistics } from './Statistic/Statistic';
+import { Container } from './App.module';
+import { GlobalStyles } from './GlobalStyles';
+
+const name = ['good', 'neutral', 'bad'];
+
+export default function App() {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const countTotalFeedback = () => {
+    return good + neutral + bad;
+  };
+
+  const countPositiveFeedbackPercentage = () => {
+    let total = countTotalFeedback();
+    return total ? Math.floor((good / total) * 100) : 0;
+  };
+
+  const onLeaveFeedback = e => {
+    const name = e.target.name;
+    switch (name) {
+      case 'good':
+        setGood(value => value + 1);
+        break;
+      case 'neutral':
+        setNeutral(value => value + 1);
+        break;
+      case 'bad':
+        setBad(value => value + 1);
+        break;
+      default:
+        return;
+    }
+  };
+
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <Container>
+      <Section title="Please leave feedback">
+        <Feedback options={name} onLeaveFeedback={onLeaveFeedback} />
+      </Section>
+      <Section title="Statistics">
+        {countTotalFeedback() ? (
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={countTotalFeedback()}
+            positivePercentage={countPositiveFeedbackPercentage()}
+          />
+        ) : (
+          <Notification message="There is no feedback" />
+        )}
+      </Section>
+      <GlobalStyles />
+    </Container>
   );
-};
+}
