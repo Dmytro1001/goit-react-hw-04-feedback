@@ -6,8 +6,6 @@ import { Statistics } from './Statistic/Statistic';
 import { Container } from './App.module';
 import { GlobalStyles } from './GlobalStyles';
 
-const name = ['good', 'neutral', 'bad'];
-
 export default function App() {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
@@ -22,9 +20,8 @@ export default function App() {
     return total ? Math.floor((good / total) * 100) : 0;
   };
 
-  const onLeaveFeedback = e => {
-    const name = e.target.name;
-    switch (name) {
+  const onLeaveFeedback = type => {
+    switch (type) {
       case 'good':
         setGood(value => value + 1);
         break;
@@ -42,7 +39,7 @@ export default function App() {
   return (
     <Container>
       <Section title="Please leave feedback">
-        <Feedback options={name} onLeaveFeedback={onLeaveFeedback} />
+        <Feedback onLeaveFeedback={onLeaveFeedback} />
       </Section>
       <Section title="Statistics">
         {countTotalFeedback() ? (

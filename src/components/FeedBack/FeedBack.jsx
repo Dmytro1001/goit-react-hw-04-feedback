@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types';
 import { FeedbackWrapper, FeedbackButton } from './FeedBack.module';
 
-export const Feedback = ({ options, onLeaveFeedback }) => (
+const options = ['good', 'neutral', 'bad'];
+
+export const Feedback = ({ onLeaveFeedback }) => (
   <FeedbackWrapper>
     {options.map((option, index) => (
       <FeedbackButton
         key={index}
         name={option}
         type="button"
-        onClick={onLeaveFeedback}
+        onClick={() => onLeaveFeedback(option)}
       >
         {option}
       </FeedbackButton>
